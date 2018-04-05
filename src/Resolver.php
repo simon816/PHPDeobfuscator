@@ -349,7 +349,7 @@ class Resolver extends PhpParser\NodeVisitorAbstract
     {
         $var = $this->resolveVariable($expr->var);
         $ref = $this->resolveVariable($expr->expr);
-        if (!$ref->notAVarRef()) {
+        if (!($ref instanceof UnknownVarRef) || !$ref->notAVarRef()) {
             $val = new ByReference($ref, $this->scope);
         } else {
             // Possible assignment to a non-variable - just a normal assignment

@@ -29,7 +29,11 @@ class ListVarRef implements VarRef
             if ($var === null) {
                 continue;
             }
-            $didAssignAll = $var->assignValue($scope, $valRef->arrayFetch($i)) && $didAssignAll;
+            $val = $valRef->arrayFetch($i);
+            if ($val === null) {
+                continue;
+            }
+            $didAssignAll = $var->assignValue($scope, $val) && $didAssignAll;
         }
         return $didAssignAll;
     }
