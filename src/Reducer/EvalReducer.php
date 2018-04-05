@@ -1,0 +1,88 @@
+<?php
+namespace Reducer;
+
+use PhpParser\Node\Expr;
+use PhpParser\Node\Scalar\String_;
+
+use Deobfuscator;
+use EvalBlock;
+use Utils;
+
+class EvalReducer extends AbstractReducer
+{
+    private $deobfuscator;
+    private $outputAsEvalStr;
+
+    public function __construct(Deobfuscator $deobfuscator, $outputAsEvalStr = false)
+    {
+        $this->deobfuscator = $deobfuscator;
+        $this->outputAsEvalStr = $outputAsEvalStr;
+    }
+
+    public function reduceEval(Expr\Eval_ $node)
+    {
+        $expr = Utils::getValue($node->expr);
+        if (!is_string($expr)) {
+            return null;
+        }
+        return $this->tryRunEval($expr);
+    }
+
+    public function reduceInclude(Expr\Include_ $node)
+    {
+        // TODO $node->type
+        // TODO should this replace the include with an eval or should it just export the symbols?
+        // need to handle recursive includes
+        // One of Include_::(TYPE_INCLUDE, TYPE_INCLUDE_ONCE, TYPE_REQUIRE, TYPE_REQUIRE_ONCE)
+        $file = Utils::getValue($node->expr);
+        $fileSystem = $this->deobfuscator->getFilesystem();
+        if (!$fileSystem->has($file)) {
+            return;
+        }
+        $code = $fileSystem->read($file);
+        return $this->tryRunEval($code);
+    }
+
+    private function tryRunEval($code)
+    {
+        try {
+            return $this->runEval($code);
+        } catch (\Exception $e) {
+            print "Error traversing". PHP_EOL;
+            echo $e->getMessage() . PHP_EOL;
+            echo $e->getTraceAsString() . PHP_EOL;
+            return null;
+        }
+    }
+
+    public function runEval($code)
+    {
+        $tree = $this->runEvalTree($code);
+        // If it's just a single expression, return directly
+        if (count($tree) == 1 && $tree[0] instanceof Expr) {
+            return $tree[0];
+        }
+        if ($this->outputAsEvalStr) {
+            $expr = new Expr\Eval_(new String_($this->deobfuscator->prettyPrint($tree, false), array(
+                'kind' => String_::KIND_NOWDOC, 'docLabel' => 'EVAL' . rand()
+            ))) ;
+        } else {
+            $expr = new EvalBlock($tree);
+        }
+        return $expr;
+    }
+
+    public function runEvalTree($code)
+    {
+        /* Convert ?> into <? */
+        if (substr($code, 0, 2) == '?>' && $code{2} != '<') {
+            $code{0} = '<';
+            $code{1} = '?';
+        }
+        $prefix = substr($code, 0, 2) == '<?' ? '' : '<?php ';
+        $tree = $this->deobfuscator->parse("{$prefix}{$code}");
+        $tree = $this->deobfuscator->deobfuscate($tree);
+        return $tree;
+    }
+
+}
