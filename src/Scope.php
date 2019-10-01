@@ -35,7 +35,8 @@ class Scope
     public function setVariable($name, ValRef $val)
     {
         if (isset($this->superGlobals[$name])) {
-            throw new \Exception("Attempted to set superglobal $name");
+            // Superglobals can be reassigned. They simply take the value of whatever is given
+            $this->superGlobals[$name] = $val;
         }
         $this->variables[$name] = $val;
     }

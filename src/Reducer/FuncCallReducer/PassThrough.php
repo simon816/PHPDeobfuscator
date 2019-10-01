@@ -9,14 +9,18 @@ class PassThrough implements FunctionReducer
     public function getSupportedNames()
     {
         return array(
+            'base_convert',
             'base64_decode',
             'chr',
+            'ceil',
             'dirname',
             'explode',
+            'gmmktime',
             'gzinflate',
             'gzuncompress',
             'htmlspecialchars_decode',
             'implode',
+            'intval',
             'ord',
             'rawurldecode',
             'sha1',
@@ -26,6 +30,7 @@ class PassThrough implements FunctionReducer
             'strrev',
             'strtoupper',
             'strtr',
+            'substr',
             'urldecode',
         );
     }

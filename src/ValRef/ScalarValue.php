@@ -31,7 +31,7 @@ class ScalarValue extends AbstractValRef
         if (isset($val[$dim])) {
             return new ScalarValue($val[$dim]);
         }
-        return null;
+        return new ScalarValue(null);
     }
 
     public function arrayAssign($dim, ValRef $valRef)

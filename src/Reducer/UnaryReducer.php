@@ -10,7 +10,7 @@ class UnaryReducer extends AbstractReducer
 
     public function reduceUnaryMinus(Node\Expr\UnaryMinus $node)
     {
-        return Utils::scalarToNode(Utils::getValue($node->expr));
+        return Utils::scalarToNode(-Utils::getValue($node->expr));
     }
 
     public function reduceBoolCast(Cast\Bool_ $node)

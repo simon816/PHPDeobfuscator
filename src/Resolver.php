@@ -38,7 +38,9 @@ class Resolver extends PhpParser\NodeVisitorAbstract
             'method' => '',
             'trait' => ''
         );
-        $this->constants = array();
+        $this->constants = array(
+            'PHP_EOL' => "\n"
+        );
     }
 
     public function enterNode(Node $node)
@@ -58,7 +60,10 @@ class Resolver extends PhpParser\NodeVisitorAbstract
                     if ($use->byRef) {
                         $val = new ByReference($var, $parentScope);
                     }
-                    $var->assignValue($this->scope, $val);
+                    // Only assign if variable is known
+                    if ($val !== null) {
+                        $var->assignValue($this->scope, $val);
+                    }
                 }
             }
         }
@@ -335,7 +340,11 @@ class Resolver extends PhpParser\NodeVisitorAbstract
         if ($valRef === null || $valRef->isMutable() || !($valRef instanceof ScalarValue)) {
             return;
         }
-        $this->constants[$nameRef->getValue()] = $valRef->getValue();
+        $constName = $nameRef->getValue();
+        if (array_key_exists($constName, $this->constants)) {
+            return; // PHP won't override existing constants
+        }
+        $this->constants[$constName] = $valRef->getValue();
     }
 
     private function onAssign(Expr\Assign $expr)
