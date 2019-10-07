@@ -9,10 +9,11 @@ class EvalBlock extends Expr
 {
     public $stmts;
 
-    public function __construct(array $stmts, array $attributes = array())
+    public function __construct(array $stmts, array $origStmts = null, array $attributes = array())
     {
         parent::__construct($attributes);
         $this->stmts = $stmts;
+        $this->origStmts = $origStmts;
     }
 
     public function getSubNodeNames()

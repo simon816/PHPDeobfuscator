@@ -13,7 +13,7 @@ class Deobfuscator
     private $fileSystem;
     private $filename;
 
-    public function __construct($dumpOrig = false)
+    public function __construct($dumpOrig = false, $annotateReductions = false)
     {
         $this->parser = (new PhpParser\ParserFactory())->create(PhpParser\ParserFactory::ONLY_PHP5);
         $this->prettyPrinter = new ExtendedPrettyPrinter();
@@ -49,6 +49,13 @@ class Deobfuscator
         $reducer->addReducer(new Reducer\MiscReducer());
 
         $this->secondPass->addVisitor($reducer);
+
+        if ($annotateReductions) {
+            $this->metaVisitor = new MetadataVisitor($this);
+            $this->secondPass->addVisitor($this->metaVisitor);
+        } else {
+            $this->metaVisitor = null;
+        }
     }
 
     public function getFilesystem()
@@ -81,6 +88,14 @@ class Deobfuscator
         } else {
             return $this->prettyPrinter->prettyPrint($tree);
         }
+    }
+
+    public function printFileReductions(array $stmts)
+    {
+        if ($this->metaVisitor === null) {
+            throw new LogicException("annotateReductions was not set on construction");
+        }
+        return $this->metaVisitor->printFileReductions($stmts);
     }
 
     public function deobfuscate(array $tree)

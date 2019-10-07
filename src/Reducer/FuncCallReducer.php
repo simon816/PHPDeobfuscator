@@ -28,7 +28,10 @@ class FuncCallReducer extends AbstractReducer
             $name = $node->name->toString();
         } else {
             $name = Utils::getValue($node->name);
-            $node->name = new Node\Name($name);
+            $nameNode = new Node\Name($name);
+            // Special case for MetadataVisitor
+            $nameNode->setAttribute('replaces', $node->name);
+            $node->name = $nameNode;
         }
         return $this->makeFunctionCall($name, $node);
     }

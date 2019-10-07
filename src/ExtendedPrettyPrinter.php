@@ -8,4 +8,14 @@ class ExtendedPrettyPrinter extends Standard
     {
         return 'eval /* PHPDeobfuscator eval output */ {' . $this->pStmts($block->stmts) . "\n}";
     }
+
+    // Escape all non-printable characters
+    // The parent printer already handles the 00-1F range
+    protected function escapeString($string, $quote) {
+        return preg_replace_callback('/([\x7F\x80-\xFF])/', function ($matches) {
+            return '\\x' . bin2hex($matches[1]);
+        }, parent::escapeString($string, $quote));
+    }
+
+
 }

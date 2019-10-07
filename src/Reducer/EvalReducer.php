@@ -25,7 +25,8 @@ class EvalReducer extends AbstractReducer
         if (!is_string($expr)) {
             return null;
         }
-        return $this->tryRunEval($expr);
+        $newExpr = $this->tryRunEval($expr);
+        return $newExpr;
     }
 
     public function reduceInclude(Expr\Include_ $node)
@@ -57,7 +58,8 @@ class EvalReducer extends AbstractReducer
 
     public function runEval($code)
     {
-        $tree = $this->runEvalTree($code);
+        $origTree = $this->parseCode($code);
+        $tree = $this->deobfTree($origTree);
         // If it's just a single expression, return directly
         if (count($tree) == 1 && $tree[0] instanceof Expr) {
             return $tree[0];
@@ -67,12 +69,12 @@ class EvalReducer extends AbstractReducer
                 'kind' => String_::KIND_NOWDOC, 'docLabel' => 'EVAL' . rand()
             ))) ;
         } else {
-            $expr = new EvalBlock($tree);
+            $expr = new EvalBlock($tree, $origTree);
         }
         return $expr;
     }
 
-    public function runEvalTree($code)
+    private function parseCode($code)
     {
         /* Convert ?> into <? */
         if (substr($code, 0, 2) == '?>' && $code{2} != '<') {
@@ -80,9 +82,17 @@ class EvalReducer extends AbstractReducer
             $code{1} = '?';
         }
         $prefix = substr($code, 0, 2) == '<?' ? '' : '<?php ';
-        $tree = $this->deobfuscator->parse("{$prefix}{$code}");
-        $tree = $this->deobfuscator->deobfuscate($tree);
-        return $tree;
+        return $this->deobfuscator->parse("{$prefix}{$code}");
+    }
+
+    private function deobfTree($tree)
+    {
+        return $this->deobfuscator->deobfuscate($tree);
+    }
+
+    public function runEvalTree($code)
+    {
+        return $this->deobfTree($this->parseCode($code));
     }
 
 }
