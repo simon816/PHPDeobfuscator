@@ -16,6 +16,12 @@ It is implemented in PHP with the help of [PHP-Parser](https://github.com/nikic/
 - Variable resolver (e.g. `$var1 = 10; $var2 = &$var1; $var2 = 20;` can determine `$var1` equals `20`)
 - Rewrite control flow obfuscation
 
+## Installation
+
+PHP Deobfuscator uses [Composer](https://getcomposer.org/) to manage its dependencies. Make sure Composer is installed first.
+
+Run `composer install` in the root of this project to fetch dependencies.
+
 ## Usage
 
 ### CLI
