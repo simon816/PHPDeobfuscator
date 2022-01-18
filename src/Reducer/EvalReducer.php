@@ -37,7 +37,7 @@ class EvalReducer extends AbstractReducer
         // One of Include_::(TYPE_INCLUDE, TYPE_INCLUDE_ONCE, TYPE_REQUIRE, TYPE_REQUIRE_ONCE)
         $file = Utils::getValue($node->expr);
         $fileSystem = $this->deobfuscator->getFilesystem();
-        if (!$fileSystem->has($file)) {
+        if (!$fileSystem->safeHas($file)) {
             return;
         }
         $code = $fileSystem->read($file);

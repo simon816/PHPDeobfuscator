@@ -43,7 +43,7 @@ class FileSystemCall implements FunctionReducer
 
     private function file_get_contents($filename, $flags = 0, $context = null, $offset = -1, $maxlen = -1)
     {
-        if ($this->fileSystem->has($filename)) {
+        if ($this->fileSystem->safeHas($filename)) {
             return Utils::scalarToNode($this->fileSystem->read($filename));
         }
         return null;
@@ -51,7 +51,7 @@ class FileSystemCall implements FunctionReducer
 
     private function file($filename, $flags = 0, $context = null)
     {
-        if ($this->fileSystem->has($filename)) {
+        if ($this->fileSystem->safeHas($filename)) {
             $content = $this->fileSystem->read($filename);
             $lines = preg_split("/(\r\n|\r|\n)/", $content);
             return Utils::scalarToNode($lines);

@@ -31,6 +31,7 @@ class Deobfuscator
         $this->secondPass->addVisitor(new ResolveValueVisitor($resolver));
 
         $this->fileSystem = new Filesystem(new MemoryAdapter());
+        $this->fileSystem->addPlugin(new FSPlugins\SafeHas());
 
         $evalReducer = new Reducer\EvalReducer($this);
 
