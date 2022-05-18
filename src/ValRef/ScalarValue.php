@@ -36,7 +36,7 @@ class ScalarValue extends AbstractValRef
 
     public function arrayAssign($dim, ValRef $valRef)
     {
-        if ($dim == null) {
+        if ($dim === null) {
             $this->value[] = $valRef->getValue();
         } else {
             $this->value[$dim] = $valRef->getValue();
