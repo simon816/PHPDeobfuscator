@@ -32,6 +32,8 @@ class PassThrough implements FunctionReducer
             'strtr',
             'substr',
             'urldecode',
+            'convert_uudecode',
+            'hex2bin',
         );
     }
 
