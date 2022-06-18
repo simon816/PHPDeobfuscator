@@ -213,7 +213,7 @@ class ControlFlowVisitor extends PhpParser\NodeVisitorAbstract
 
     private function rebuildAndTrim()
     {
-        $nodes = $this->scope->root->rebuild();
+        $nodes = $this->scope->root->root()->rebuild();
         while ($nodes && $nodes[count($nodes) - 1]->hasAttribute('impliedReturn')) {
             array_pop($nodes);
         }
@@ -267,6 +267,7 @@ class CodeBlock
 {
     public $name;
     private $exitBlock;
+    // Blocks which enter our block (indexed by their name)
     private $enters = array();
     private $nested = array();
     private $unreachable;
@@ -274,7 +275,10 @@ class CodeBlock
     private $unreachableNodes = array();
     private $built = false;
     private $aliasOf;
+    // For every Label we possess, keep track of the number of enters using this name
     private $entersPerName = array();
+    // Map the name of an enter block (in $enters) to the name we saw it enter by
+    private $enterByName = array();
     private $exitOrigName;
     private $defined = false;
 
@@ -297,8 +301,8 @@ class CodeBlock
             // Remove the jump to our exit block if it's not been built yet
             $removeGotoExit = !$this->exitBlock->built && $this->exitBlock->defined;
             // If our exit block has only one entrance (i.e. us), then skip outputting its label
-            $remmoveExitLabel = $removeGotoExit && $this->exitBlock->entersPerName[$this->exitOrigName] === 1;
-            $nodes = $this->exitBlock->rebuild($remmoveExitLabel ? $this->exitOrigName : null);
+            $removeExitLabel = $removeGotoExit && $this->exitBlock->entersPerName[$this->exitOrigName] === 1;
+            $nodes = $this->exitBlock->rebuild($removeExitLabel ? $this->exitOrigName : null);
 
             // Add these nodes back on so we don't loose code when a block is undefined
             if (!$this->exitBlock->defined) {
@@ -309,7 +313,7 @@ class CodeBlock
             function($node) use ($removeLabel, $removeGotoExit) {
                 if ($node instanceof Stmt\Label) {
                     // If no enters to label or label is $removeLabel, remove.
-                    return $this->entersPerName[$node->name] !== 0 && (!$removeLabel || $node->name != $removeLabel);
+                    return $this->entersPerName[$node->name] !== 0 && (!$removeLabel || $node->name !== $removeLabel);
                 }
                 if ($removeGotoExit && $node instanceof Stmt\Goto_) {
                     return $node->name != $this->exitOrigName;
@@ -354,16 +358,23 @@ class CodeBlock
         $this->aliasOf = $other;
         // Anywhere that enters our block will now enter the alias
         foreach ($this->enters as $block) {
-            $other->enter($block, $this->name);
+            // It must enter the alias under the name it entered us by, to propagate
+            // the referenced label name forward
+            $other->enter($block, $this->enterByName[$block->name]);
             $block->exitBlock = $other;
         }
         $this->enters = array(); // ensure unreachable
+        $this->enterByName = array();
         if ($this->nodes) {
             // Put our label(s) on the other block
             $other->nodes = array_merge($this->nodes, $other->nodes);
         }
-        if (!array_key_exists($this->name, $other->entersPerName)) {
-            $other->entersPerName[$this->name] = 0;
+        // Any unreferenced aliased names that we picked up should now be picked
+        // up by the other block (referenced names already handled above)
+        foreach (array_keys($this->entersPerName) as $ourName) {
+            if (!array_key_exists($ourName, $other->entersPerName)) {
+                $other->entersPerName[$ourName] = 0;
+            }
         }
         $this->setUnreachable();
     }
@@ -436,6 +447,7 @@ class CodeBlock
         $this->exitBlock = $block;
     }
 
+    // $block enters our block, optionally using an alternate name
     public function enter(CodeBlock $block, $targetName = null)
     {
         $targetName = $targetName ?: $this->name;
@@ -444,6 +456,8 @@ class CodeBlock
             return;
         }
         $this->enters[$block->name] = $block;
+        $this->enterByName[$block->name] = $targetName;
+        // Increment the refcount of the effective name that entered us
         if (!isset($this->entersPerName[$targetName])) {
             $this->entersPerName[$targetName] = 0;
         }
