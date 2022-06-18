@@ -1,0 +1,132 @@
+INPUT
+
+goto label4;
+label1:
+func4();
+exit;
+label2:
+func3();
+goto label1;
+label3:
+func2();
+goto label2;
+label4:
+func1();
+goto label3;
+
+OUTPUT
+
+func1();
+func2();
+func3();
+func4();
+exit;
+
+INPUT
+
+goto LabelA;
+LabelA:
+LabelB:
+LabelC:
+echo 'hello';
+
+OUTPUT
+
+echo "hello";
+
+INPUT
+
+A:
+B:
+C:
+1;
+
+OUTPUT
+
+1;
+
+INPUT
+
+if (1) {
+    goto A;
+} else {
+    goto A;
+}
+
+goto B;
+
+A:
+C:
+B:
+1;
+
+OUTPUT
+
+if (1) {
+    goto A;
+} else {
+    goto A;
+}
+A:
+1;
+
+INPUT
+
+if (1) {
+    2;
+    goto end;
+}
+3;
+end:
+4;
+
+OUTPUT
+
+if (1) {
+    2;
+    goto end;
+}
+3;
+end:
+4;
+
+INPUT
+
+$something = false;
+$otherthing = false;
+$another = true;
+
+if ($something) {
+    goto abc;
+    abc:
+    echo "true";
+} elseif ($otherthing) {
+    echo "other 1";
+} elseif ($another) {
+    echo "alt";
+    goto def;
+} else {
+    goto def;
+    def:
+    echo "false";
+    goto abc;
+}
+
+OUTPUT
+
+$something = false;
+$otherthing = false;
+$another = true;
+if ($something) {
+    abc:
+    echo "true";
+} elseif ($otherthing) {
+    echo "other 1";
+} elseif ($another) {
+    echo "alt";
+    def:
+    echo "false";
+    goto abc;
+} else {
+    goto def;
+}
