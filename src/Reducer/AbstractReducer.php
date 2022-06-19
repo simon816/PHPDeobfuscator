@@ -1,9 +1,10 @@
 <?php
-namespace Reducer;
+
+namespace PHPDeobfuscator\Reducer;
 
 use PhpParser\Node;
-use ReducerVisitor;
-use Reducer;
+use PHPDeobfuscator\ReducerVisitor;
+use PHPDeobfuscator\Reducer;
 
 abstract class AbstractReducer implements Reducer
 {

@@ -1,5 +1,7 @@
 <?php
 
+namespace PHPDeobfuscator;
+
 use PhpParser\Node;
 use PhpParser\NodeAbstract;
 use PhpParser\Node\Expr;

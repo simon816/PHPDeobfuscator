@@ -1,8 +1,10 @@
 <?php
 
+namespace PHPDeobfuscator;
+
 use PhpParser\Node;
 
-class ReducerVisitor extends PhpParser\NodeVisitorAbstract
+class ReducerVisitor extends \PhpParser\NodeVisitorAbstract
 {
     private $reducerByClass = array();
     private $prettyPrinter;

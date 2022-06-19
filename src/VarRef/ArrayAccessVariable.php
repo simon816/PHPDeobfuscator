@@ -1,9 +1,10 @@
 <?php
-namespace VarRef;
 
-use Scope;
-use ValRef;
-use VarRef;
+namespace PHPDeobfuscator\VarRef;
+
+use PHPDeobfuscator\Scope;
+use PHPDeobfuscator\ValRef;
+use PHPDeobfuscator\VarRef;
 
 class ArrayAccessVariable implements VarRef
 {

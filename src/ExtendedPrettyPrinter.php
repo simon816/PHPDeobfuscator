@@ -1,5 +1,7 @@
 <?php
 
+namespace PHPDeobfuscator;
+
 use PhpParser\PrettyPrinter\Standard;
 
 class ExtendedPrettyPrinter extends Standard

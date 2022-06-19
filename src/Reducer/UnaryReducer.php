@@ -1,9 +1,10 @@
 <?php
-namespace Reducer;
+
+namespace PHPDeobfuscator\Reducer;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\Cast;
-use Utils;
+use PHPDeobfuscator\Utils;
 
 class UnaryReducer extends AbstractReducer
 {

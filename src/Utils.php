@@ -1,12 +1,14 @@
 <?php
 
+namespace PHPDeobfuscator;
+
 use League\Flysystem\Filesystem;
 use League\Flysystem\PathTraversalDetected;
 use PhpParser\Node;
 use PhpParser\Node\Scalar;
 
-use ValRef\ArrayVal;
-use ValRef\ScalarValue;
+use PHPDeobfuscator\ValRef\ArrayVal;
+use PHPDeobfuscator\ValRef\ScalarValue;
 
 class Utils
 {

@@ -1,5 +1,7 @@
 <?php
 
+namespace PHPDeobfuscator;
+
 class AttrName
 {
     const VALUE = 'value';

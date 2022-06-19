@@ -1,5 +1,7 @@
 <?php
 
+namespace PHPDeobfuscator;
+
 class Scope
 {
     private $name;

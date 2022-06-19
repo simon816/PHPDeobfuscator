@@ -1,4 +1,7 @@
 <?php
+
+namespace PHPDeobfuscator;
+
 use League\Flysystem\Filesystem;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 
@@ -15,11 +18,11 @@ class Deobfuscator
 
     public function __construct($dumpOrig = false, $annotateReductions = false)
     {
-        $this->parser = (new PhpParser\ParserFactory())->create(PhpParser\ParserFactory::PREFER_PHP7);
+        $this->parser = (new \PhpParser\ParserFactory())->create(\PhpParser\ParserFactory::PREFER_PHP7);
         $this->prettyPrinter = new ExtendedPrettyPrinter();
 
-        $this->firstPass = new PhpParser\NodeTraverser;
-        $this->secondPass = new PhpParser\NodeTraverser;
+        $this->firstPass = new \PhpParser\NodeTraverser;
+        $this->secondPass = new \PhpParser\NodeTraverser;
 
         $this->firstPass->addVisitor(new ControlFlowVisitor());
 
@@ -93,7 +96,7 @@ class Deobfuscator
     public function printFileReductions(array $stmts)
     {
         if ($this->metaVisitor === null) {
-            throw new LogicException("annotateReductions was not set on construction");
+            throw new \LogicException("annotateReductions was not set on construction");
         }
         return $this->metaVisitor->printFileReductions($stmts);
     }

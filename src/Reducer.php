@@ -1,5 +1,7 @@
 <?php
 
+namespace PHPDeobfuscator;
+
 use PhpParser\Node;
 
 interface Reducer

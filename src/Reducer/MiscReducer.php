@@ -1,9 +1,10 @@
 <?php
-namespace Reducer;
+
+namespace PHPDeobfuscator\Reducer;
 
 use PhpParser\Node;
-use Utils;
-use Exceptions;
+use PHPDeobfuscator\Utils;
+use PHPDeobfuscator\Exceptions;
 
 class MiscReducer extends AbstractReducer
 {

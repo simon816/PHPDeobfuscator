@@ -1,8 +1,9 @@
 <?php
-namespace Reducer\FuncCallReducer;
+
+namespace PHPDeobfuscator\Reducer\FuncCallReducer;
 
 use PhpParser\Node\Expr\FuncCall;
-use Utils;
+use PHPDeobfuscator\Utils;
 
 class FunctionSandbox implements FunctionReducer
 {

@@ -1,5 +1,7 @@
 <?php
 
+namespace PHPDeobfuscator;
+
 interface VarRef
 {
     public function getValue(Scope $scope);

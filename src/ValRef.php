@@ -1,5 +1,7 @@
 <?php
 
+namespace PHPDeobfuscator;
+
 interface ValRef
 {
     public function isMutable();

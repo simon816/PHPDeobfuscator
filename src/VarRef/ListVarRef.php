@@ -1,10 +1,11 @@
 <?php
-namespace VarRef;
 
-use Scope;
-use ValRef;
-use ValRef\ArrayVal;
-use VarRef;
+namespace PHPDeobfuscator\VarRef;
+
+use PHPDeobfuscator\Scope;
+use PHPDeobfuscator\ValRef;
+use PHPDeobfuscator\ValRef\ArrayVal;
+use PHPDeobfuscator\VarRef;
 
 class ListVarRef implements VarRef
 {

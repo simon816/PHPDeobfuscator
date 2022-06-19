@@ -1,11 +1,12 @@
 <?php
-namespace Reducer;
+
+namespace PHPDeobfuscator\Reducer;
 
 use PhpParser\Node;
 use PhpParser\Node\Scalar\MagicConst;
-use Deobfuscator;
-use Resolver;
-use Utils;
+use PHPDeobfuscator\Deobfuscator;
+use PHPDeobfuscator\Resolver;
+use PHPDeobfuscator\Utils;
 
 class MagicReducer extends AbstractReducer
 {

@@ -1,12 +1,13 @@
 <?php
-namespace VarRef;
+
+namespace PHPDeobfuscator\VarRef;
 
 use PhpParser\Node\Expr;
 
-use Resolver;
-use Scope;
-use ValRef;
-use VarRef;
+use PHPDeobfuscator\Resolver;
+use PHPDeobfuscator\Scope;
+use PHPDeobfuscator\ValRef;
+use PHPDeobfuscator\VarRef;
 /**
  *  This is used for list assignment (ListVarRef) for variables that are not known
  *  until another variable in the list is known.

@@ -43,7 +43,7 @@ while ($testfile = readdir($d)) {
     foreach ($tests as $i => $test) {
         $name = $testfile . '/' . ($i + 1);
         $code = "<?php\n" . trim(implode('', $test['input']));
-        $deobf = new Deobfuscator();
+        $deobf = new \PHPDeobfuscator\Deobfuscator();
         $deobf->getFilesystem()->write($virtualPath, $code);
         $deobf->setCurrentFilename($virtualPath);
         try {

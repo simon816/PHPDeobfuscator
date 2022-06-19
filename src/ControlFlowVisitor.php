@@ -1,5 +1,7 @@
 <?php
 
+namespace PHPDeobfuscator;
+
 use PhpParser\Node;
 use PhpParser\Node\Stmt;
 
@@ -55,7 +57,7 @@ class LabelScope
     }
 }
 
-class ControlFlowVisitor extends PhpParser\NodeVisitorAbstract
+class ControlFlowVisitor extends \PhpParser\NodeVisitorAbstract
 {
     private $scope;
     private $scopeStack = array();
@@ -100,7 +102,7 @@ class ControlFlowVisitor extends PhpParser\NodeVisitorAbstract
         $this->scope = new LabelScope(new CodeBlock('<main>'));
         $this->scopeStack = array();
         $nodes[] = new Stmt\Return_(null, array(
-            'comments' => array(new PhpParser\Comment('// [PHPDeobfuscator] Implied script end')),
+            'comments' => array(new \PhpParser\Comment('// [PHPDeobfuscator] Implied script end')),
             'impliedReturn' => true
         ));
         return $nodes;
@@ -116,7 +118,7 @@ class ControlFlowVisitor extends PhpParser\NodeVisitorAbstract
             } else {
                 // Add explicit goto from the implicit fall through
                 $this->scope->currentBlock->append(new Stmt\Goto_($node->name, array(
-                    'comments' => array(new PhpParser\Comment('// [PHPDeobfuscator] Implied goto'))
+                    'comments' => array(new \PhpParser\Comment('// [PHPDeobfuscator] Implied goto'))
                 )));
                 $this->moveInto($block);
             }
@@ -159,7 +161,7 @@ class ControlFlowVisitor extends PhpParser\NodeVisitorAbstract
         ) {
             $this->scope->currentBlock->setUnreachable();
         }
-        return PhpParser\NodeTraverser::DONT_TRAVERSE_CHILDREN;
+        return \PhpParser\NodeTraverser::DONT_TRAVERSE_CHILDREN;
     }
 
     private function nestedNode(Node $node, $name, $stmtAttr, array $subNodes = array(), $changeScope = false)
@@ -201,7 +203,7 @@ class ControlFlowVisitor extends PhpParser\NodeVisitorAbstract
          || $node instanceof Node\Expr\Closure) {
             // Add implied return
             $this->scope->currentBlock->append(new Stmt\Return_(null, array(
-                'comments' => array(new PhpParser\Comment('// [PHPDeobfuscator] Implied return')),
+                'comments' => array(new \PhpParser\Comment('// [PHPDeobfuscator] Implied return')),
                 'impliedReturn' => true
             )));
         }
@@ -267,7 +269,7 @@ class WrappedNode implements Node
 
     public function getDocComment() { return $this->node->getDocComment(); }
 
-    public function setDocComment(PhpParser\Comment\Doc $docComment) { $this->node->setDocComment($docComment); }
+    public function setDocComment(\PhpParser\Comment\Doc $docComment) { $this->node->setDocComment($docComment); }
 
     public function setAttribute(string $key, $value) { $this->node->setAttribute($key, $value); }
 

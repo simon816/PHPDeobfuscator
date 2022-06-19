@@ -1,13 +1,14 @@
 <?php
-namespace Reducer\FuncCallReducer;
+
+namespace PHPDeobfuscator\Reducer\FuncCallReducer;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\FuncCall;
 
-use Exceptions;
-use Reducer\EvalReducer;
-use Resolver;
-use Utils;
+use PHPDeobfuscator\Exceptions;
+use PHPDeobfuscator\Reducer\EvalReducer;
+use PHPDeobfuscator\Resolver;
+use PHPDeobfuscator\Utils;
 
 class MiscFunctions implements FunctionReducer
 {

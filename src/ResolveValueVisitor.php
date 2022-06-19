@@ -1,15 +1,17 @@
 <?php
 
+namespace PHPDeobfuscator;
+
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Scalar;
 
-use ValRef\ArrayVal;
-use ValRef\ObjectVal;
-use ValRef\ScalarValue;
-use ValRef\UnknownValRef;
+use PHPDeobfuscator\ValRef\ArrayVal;
+use PHPDeobfuscator\ValRef\ObjectVal;
+use PHPDeobfuscator\ValRef\ScalarValue;
+use PHPDeobfuscator\ValRef\UnknownValRef;
 
-class ResolveValueVisitor extends PhpParser\NodeVisitorAbstract
+class ResolveValueVisitor extends \PhpParser\NodeVisitorAbstract
 {
     private $resolver;
 

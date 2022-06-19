@@ -1,10 +1,11 @@
 <?php
-namespace ValRef;
 
-use Exceptions;
-use Scope;
-use ValRef;
-use VarRef;
+namespace PHPDeobfuscator\ValRef;
+
+use PHPDeobfuscator\Exceptions;
+use PHPDeobfuscator\Scope;
+use PHPDeobfuscator\ValRef;
+use PHPDeobfuscator\VarRef;
 
 class ByReference implements ValRef
 {

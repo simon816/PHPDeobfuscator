@@ -1,9 +1,10 @@
 <?php
-namespace Reducer;
+
+namespace PHPDeobfuscator\Reducer;
 
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Expr\BinaryOp;
-use Utils;
+use PHPDeobfuscator\Utils;
 
 class BinaryOpReducer extends AbstractReducer
 {

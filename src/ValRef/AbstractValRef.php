@@ -1,8 +1,9 @@
 <?php
-namespace ValRef;
 
-use Exceptions;
-use ValRef;
+namespace PHPDeobfuscator\ValRef;
+
+use PHPDeobfuscator\Exceptions;
+use PHPDeobfuscator\ValRef;
 
 abstract class AbstractValRef implements ValRef
 {

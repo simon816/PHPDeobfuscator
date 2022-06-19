@@ -1,9 +1,10 @@
 <?php
-namespace ValRef;
 
-use Resolver;
-use ValRef;
-use ValRef\ArrayVal;
+namespace PHPDeobfuscator\ValRef;
+
+use PHPDeobfuscator\Resolver;
+use PHPDeobfuscator\ValRef;
+use PHPDeobfuscator\ValRef\ArrayVal;
 
 class GlobalVarArray extends ArrayVal
 {

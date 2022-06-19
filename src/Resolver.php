@@ -1,20 +1,22 @@
 <?php
 
+namespace PHPDeobfuscator;
+
 use PhpParser\Node;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Expr;
 
-use ValRef\ByReference;
-use ValRef\GlobalVarArray;
-use ValRef\ScalarValue;
-use VarRef\ArrayAccessVariable;
-use VarRef\ListVarRef;
-use VarRef\LiteralName;
-use VarRef\FutureVarRef;
-use VarRef\PropertyAccessVariable;
-use VarRef\UnknownVarRef;
+use PHPDeobfuscator\ValRef\ByReference;
+use PHPDeobfuscator\ValRef\GlobalVarArray;
+use PHPDeobfuscator\ValRef\ScalarValue;
+use PHPDeobfuscator\VarRef\ArrayAccessVariable;
+use PHPDeobfuscator\VarRef\ListVarRef;
+use PHPDeobfuscator\VarRef\LiteralName;
+use PHPDeobfuscator\VarRef\FutureVarRef;
+use PHPDeobfuscator\VarRef\PropertyAccessVariable;
+use PHPDeobfuscator\VarRef\UnknownVarRef;
 
-class Resolver extends PhpParser\NodeVisitorAbstract
+class Resolver extends \PhpParser\NodeVisitorAbstract
 {
 
     private $scope = null;

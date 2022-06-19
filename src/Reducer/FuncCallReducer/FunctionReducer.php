@@ -1,5 +1,6 @@
 <?php
-namespace Reducer\FuncCallReducer;
+
+namespace PHPDeobfuscator\Reducer\FuncCallReducer;
 
 use PhpParser\Node\Expr\FuncCall;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace VarRef;
+namespace PHPDeobfuscator\VarRef;
 
-use Scope;
-use ValRef;
-use VarRef;
+use PHPDeobfuscator\Scope;
+use PHPDeobfuscator\ValRef;
+use PHPDeobfuscator\VarRef;
 
 class UnknownVarRef implements VarRef
 {

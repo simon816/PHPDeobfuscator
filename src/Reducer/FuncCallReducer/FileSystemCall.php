@@ -1,14 +1,15 @@
 <?php
-namespace Reducer\FuncCallReducer;
+
+namespace PHPDeobfuscator\Reducer\FuncCallReducer;
 
 use PhpParser\Node\Expr\FuncCall;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FileNotFoundException;
 
-use AttrName;
-use Exceptions;
-use Utils;
-use ValRef\ResourceValue;
+use PHPDeobfuscator\AttrName;
+use PHPDeobfuscator\Exceptions;
+use PHPDeobfuscator\Utils;
+use PHPDeobfuscator\ValRef\ResourceValue;
 
 class FileSystemCall implements FunctionReducer
 {

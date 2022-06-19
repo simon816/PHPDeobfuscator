@@ -1,7 +1,8 @@
 <?php
-namespace Exceptions;
 
-use ValRef;
+namespace PHPDeobfuscator\Exceptions;
+
+use PHPDeobfuscator\ValRef;
 
 class MutableValueException extends BadValueException
 {

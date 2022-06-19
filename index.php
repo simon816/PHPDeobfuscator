@@ -7,7 +7,7 @@ ini_set('memory_limit', '512M');
 ini_set('xdebug.max_nesting_level', 1000);
 
 function deobfuscate($code, $filename, $dumpOrig) {
-    $deobf = new Deobfuscator($dumpOrig);
+    $deobf = new \PHPDeobfuscator\Deobfuscator($dumpOrig);
     $cwd = '/var/www/html/';
     $virtualPath = $cwd . basename($filename);
     $deobf->getFilesystem()->write($virtualPath, $code);

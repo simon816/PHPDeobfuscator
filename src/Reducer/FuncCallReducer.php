@@ -1,11 +1,12 @@
 <?php
-namespace Reducer;
+
+namespace PHPDeobfuscator\Reducer;
 
 use PhpParser\Node;
 
-use FunctionSandbox;
-use Utils;
-use ValRef\ScalarValue;
+use PHPDeobfuscator\FunctionSandbox;
+use PHPDeobfuscator\Utils;
+use PHPDeobfuscator\ValRef\ScalarValue;
 
 class FuncCallReducer extends AbstractReducer
 {

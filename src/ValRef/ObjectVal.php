@@ -1,7 +1,8 @@
 <?php
-namespace ValRef;
 
-use ValRef;
+namespace PHPDeobfuscator\ValRef;
+
+use PHPDeobfuscator\ValRef;
 
 class ObjectVal extends AbstractValRef
 {

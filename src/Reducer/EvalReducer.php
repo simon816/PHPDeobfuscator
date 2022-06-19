@@ -1,13 +1,14 @@
 <?php
-namespace Reducer;
+
+namespace PHPDeobfuscator\Reducer;
 
 use PhpParser\Node\Expr;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt;
 
-use Deobfuscator;
-use EvalBlock;
-use Utils;
+use PHPDeobfuscator\Deobfuscator;
+use PHPDeobfuscator\EvalBlock;
+use PHPDeobfuscator\Utils;
 
 class EvalReducer extends AbstractReducer
 {
