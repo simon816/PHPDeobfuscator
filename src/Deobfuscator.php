@@ -15,7 +15,7 @@ class Deobfuscator
 
     public function __construct($dumpOrig = false, $annotateReductions = false)
     {
-        $this->parser = (new PhpParser\ParserFactory())->create(PhpParser\ParserFactory::ONLY_PHP5);
+        $this->parser = (new PhpParser\ParserFactory())->create(PhpParser\ParserFactory::PREFER_PHP7);
         $this->prettyPrinter = new ExtendedPrettyPrinter();
 
         $this->firstPass = new PhpParser\NodeTraverser;

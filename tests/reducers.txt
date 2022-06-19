@@ -49,3 +49,27 @@ OUTPUT
 $a = 'test';
 echo "test";
 print "test";
+
+INPUT
+
+$a = null;
+$b = 10;
+$a ?? $b;
+$a = 2;
+$a ?? $b;
+$b ** $a;
+$a <=> $b;
+$b <=> $a;
+$a <=> $a;
+
+OUTPUT
+
+$a = null;
+$b = 10;
+10;
+$a = 2;
+2;
+100;
+-1;
+1;
+0;

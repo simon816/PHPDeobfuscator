@@ -52,9 +52,8 @@ class BinaryOpReducer extends AbstractReducer
     public function reduceBooleanOr(BinaryOp\BooleanOr $node)
     { return $this->postProcess($node, $this->left($node) || $this->right($node)); }
 
-    // PHP 7
-    //public function reduceCoalesce(BinaryOp\Coalesce $node)
-    //{ return $this->postProcess($node, $this->left($node) ?? $this->right($node)); }
+    public function reduceCoalesce(BinaryOp\Coalesce $node)
+    { return $this->postProcess($node, $this->left($node) ?? $this->right($node)); }
 
     public function reduceConcat(BinaryOp\Concat $node)
     {
@@ -115,9 +114,8 @@ class BinaryOpReducer extends AbstractReducer
     public function reducePlus(BinaryOp\Plus $node)
     { return $this->postProcess($node, $this->left($node) + $this->right($node)); }
 
-    // PHP 7
-    //public function reducePow(BinaryOp\Pow $node)
-    //{ return $this->postProcess($node, $this->left($node) ** $this->right($node)); }
+    public function reducePow(BinaryOp\Pow $node)
+    { return $this->postProcess($node, $this->left($node) ** $this->right($node)); }
 
     public function reduceShiftLeft(BinaryOp\ShiftLeft $node)
     { return $this->postProcess($node, $this->left($node) << $this->right($node)); }
@@ -131,8 +129,7 @@ class BinaryOpReducer extends AbstractReducer
     public function reduceSmallerOrEqual(BinaryOp\SmallerOrEqual $node)
     { return $this->postProcess($node, $this->left($node) <= $this->right($node)); }
 
-    // PHP 7
-    //public function reduceSpaceship(BinaryOp\Spaceship $node)
-    //{ return $this->postProcess($node, $this->left($node) <=> $this->right($node)); }
+    public function reduceSpaceship(BinaryOp\Spaceship $node)
+    { return $this->postProcess($node, $this->left($node) <=> $this->right($node)); }
 
 }
