@@ -79,9 +79,9 @@ class EvalReducer extends AbstractReducer
     private function parseCode($code)
     {
         /* Convert ?> into <? */
-        if (substr($code, 0, 2) == '?>' && $code{2} != '<') {
-            $code{0} = '<';
-            $code{1} = '?';
+        if (substr($code, 0, 2) == '?>' && $code[2] != '<') {
+            $code[0] = '<';
+            $code[1] = '?';
         }
         $prefix = substr($code, 0, 2) == '<?' ? '' : '<?php ';
         return $this->deobfuscator->parse("{$prefix}{$code}");

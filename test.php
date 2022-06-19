@@ -4,6 +4,8 @@ require 'vendor/autoload.php';
 
 $virtualPath = '/var/www/html/testcase.php';
 
+error_reporting(E_ALL);
+
 $testdir = dirname(__FILE__) . '/tests';
 
 $d = opendir($testdir);
