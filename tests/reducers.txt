@@ -1,0 +1,39 @@
+INPUT
+
+eval(base64_decode("ZWNobyAnSGVsbG8gV29ybGQnOwo="));
+
+OUTPUT
+
+eval /* PHPDeobfuscator eval output */ {
+    echo "Hello World";
+};
+
+INPUT
+echo chr((1 << 6) + 1) . "bc";
+
+OUTPUT
+echo "Abc";
+
+INPUT
+$a = 'fo' . 'o';
+print "test$a\n";
+eval('print "test$a\n";');
+
+OUTPUT
+$a = 'foo';
+print "testfoo\n";
+print "testfoo\n";
+
+INPUT
+print_r(explode('.', 'a.b.c'));
+print implode('', array(1, 2, 3));
+
+OUTPUT
+print_r(array(0 => "a", 1 => "b", 2 => "c"));
+print "123";
+
+INPUT
+print preg_replace('/([a-z])/e', 'strtoupper("$1")', 'hello world');
+
+OUTPUT
+print "HELLO WORLD";

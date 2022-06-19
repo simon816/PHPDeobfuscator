@@ -1,0 +1,34 @@
+INPUT
+
+$f = fopen(__FILE__, 'r');
+$str = fread($f, 200);
+list(,, $payload) = explode('?>', $str);
+eval($payload . '');
+?>
+if ($doBadThing) {
+    evil_payload();
+}
+
+OUTPUT
+
+$f = fopen("/var/www/html/testcase.php", 'r');
+$str = "<?php\n\$f = fopen(__FILE__, 'r');\n\$str = fread(\$f, 200);\nlist(,, \$payload) = explode('?>', \$str);\neval(\$payload . '');\n?>\nif (\$doBadThing) {\n    evil_payload();\n}";
+list(, , $payload) = array(0 => "<?php\n\$f = fopen(__FILE__, 'r');\n\$str = fread(\$f, 200);\nlist(,, \$payload) = explode('", 1 => "', \$str);\neval(\$payload . '');\n", 2 => "\nif (\$doBadThing) {\n    evil_payload();\n}");
+eval /* PHPDeobfuscator eval output */ {
+    if ($doBadThing) {
+        evil_payload();
+    }
+};
+?>
+if ($doBadThing) {
+    evil_payload();
+}
+
+INPUT
+
+include "../test.php";
+
+OUTPUT
+
+include "../test.php";
+

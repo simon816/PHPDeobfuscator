@@ -2,7 +2,7 @@
 
 require 'vendor/autoload.php';
 
-$deobf = new Deobfuscator();
+$virtualPath = '/var/www/html/testcase.php';
 
 $testdir = dirname(__FILE__) . '/tests';
 
@@ -42,7 +42,10 @@ while ($testfile = readdir($d)) {
     fclose($f);
     foreach ($tests as $i => $test) {
         $name = $testfile . '/' . ($i + 1);
-        $code = "<?php\n" . implode('', $test['input']);
+        $code = "<?php\n" . trim(implode('', $test['input']));
+        $deobf = new Deobfuscator();
+        $deobf->getFilesystem()->write($virtualPath, $code);
+        $deobf->setCurrentFilename($virtualPath);
         try {
             $out = $deobf->prettyPrint($deobf->deobfuscate($deobf->parse($code)));
         } catch (\Exception $e) {
@@ -51,7 +54,7 @@ while ($testfile = readdir($d)) {
             echo $e->getTraceAsString() . "\n";
             continue;
         }
-        $expect = "<?php\n" . rtrim(implode('', $test['output']));
+        $expect = "<?php\n\n" . trim(implode('', $test['output']));
         if ($out !== $expect) {
             echo "Test $name failed:\n";
             echo "Expected:\n";

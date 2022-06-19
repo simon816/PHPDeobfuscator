@@ -50,14 +50,14 @@ The deobfuscated output is printed to STDOUT.
 #### Input
 ```php
 <?php
-eval(base64_decode("ZWNobyAnaGknOw=="));
+eval(base64_decode("ZWNobyAnSGVsbG8gV29ybGQnOwo="));
 ```
 #### Output
 ```php
 <?php
 
 eval /* PHPDeobfuscator eval output */ {
-    echo 'hi';
+    echo "Hello World";
 };
 ```
 

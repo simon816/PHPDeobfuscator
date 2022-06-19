@@ -1,0 +1,91 @@
+INPUT
+$x = 'y';
+$$x = 10;
+echo $y * 2;
+
+OUTPUT
+$x = 'y';
+$y = 10;
+echo 20;
+
+INPUT
+$s = "abc";
+$s[0] = 0;
+echo $s;
+
+OUTPUT
+$s = "abc";
+$s[0] = 0;
+echo "0bc";
+
+INPUT
+$a = [];
+$a[] = "abc";
+echo $a[0];
+
+OUTPUT
+$a = [];
+$a[] = "abc";
+echo "abc";
+
+INPUT
+
+$a = "base64_decode";
+$b = $a("YmFzZTY0X2RlY29kZQ==");
+${$b("dGhlQ29kZQ==")} = "VGVzdA==";
+
+function test() {
+    global $b, $theCode;
+    echo "{$b("$theCode")} 123\n";
+
+}
+
+test();
+
+OUTPUT
+
+$a = "base64_decode";
+$b = "base64_decode";
+$theCode = "VGVzdA==";
+function test()
+{
+    global $b, $theCode;
+    echo "Test 123\n";
+}
+test();
+
+INPUT
+
+$test = 'abc';
+echo $test;
+for ($i = 0; $i < 10; $i++) {
+    $arr[$i] = $i;
+    $arr[2] = 100;
+    $temp = "a";
+    $b = $temp;
+    echo "$b";
+    echo "$j";
+    echo "{$arr[$i]}";
+}
+$a = array(1, 2,3);
+$a[0] = $a[2];
+echo "$b" . "$temp" . "$a" .  "$i" . "$test";
+echo "$test";
+
+OUTPUT
+
+$test = 'abc';
+echo "abc";
+for ($i = 0; $i < 10; $i++) {
+    $arr[$i] = $i;
+    $arr[2] = 100;
+    $temp = "a";
+    $b = $temp;
+    echo "a";
+    echo "{$j}";
+    echo "{$arr[$i]}";
+}
+$a = array(1, 2, 3);
+$a[0] = $a[2];
+echo "{$b}" . "{$temp}" . "Array" . "{$i}" . "{$test}";
+echo "{$test}";
