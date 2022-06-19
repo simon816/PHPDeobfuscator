@@ -48,7 +48,7 @@ while ($testfile = readdir($d)) {
         $deobf->setCurrentFilename($virtualPath);
         try {
             $out = $deobf->prettyPrint($deobf->deobfuscate($deobf->parse($code)));
-        } catch (\Exception $e) {
+        } catch (\Exception | \Error $e) {
             echo "Test $name failed:\n";
             echo "Exception: " . $e->getMessage() . "\n";
             echo $e->getTraceAsString() . "\n";

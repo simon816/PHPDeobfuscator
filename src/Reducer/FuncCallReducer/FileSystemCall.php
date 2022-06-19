@@ -43,7 +43,7 @@ class FileSystemCall implements FunctionReducer
 
     private function file_get_contents($filename, $flags = 0, $context = null, $offset = -1, $maxlen = -1)
     {
-        if ($this->fileSystem->safeHas($filename)) {
+        if (Utils::safeFileExists($this->fileSystem, $filename)) {
             return Utils::scalarToNode($this->fileSystem->read($filename));
         }
         return null;
@@ -51,7 +51,7 @@ class FileSystemCall implements FunctionReducer
 
     private function file($filename, $flags = 0, $context = null)
     {
-        if ($this->fileSystem->safeHas($filename)) {
+        if (Utils::safeFileExists($this->fileSystem, $filename)) {
             $content = $this->fileSystem->read($filename);
             $lines = preg_split("/(\r\n|\r|\n)/", $content);
             return Utils::scalarToNode($lines);
@@ -74,7 +74,7 @@ class FileSystemCall implements FunctionReducer
             }
         } elseif (strpos($mode, 'w') !== false) {
             $stream = fopen('php://memory', 'w+b');
-            $this->fileSystem->putStream($filename, $stream);
+            $this->fileSystem->writeStream($filename, $stream);
         } else {
             return;
         }
@@ -119,7 +119,7 @@ class FileSystemCall implements FunctionReducer
         } else {
             fwrite($handle->getResource(), $string);
         }
-        $this->fileSystem->updateStream($handle->getFilename(), $handle->getResource());
+        $this->fileSystem->writeStream($handle->getFilename(), $handle->getResource());
     }
 
     private function fclosePrepare(array $args, FuncCall $node)

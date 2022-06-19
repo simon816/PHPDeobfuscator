@@ -25,10 +25,29 @@ if ($doBadThing) {
 }
 
 INPUT
-
 include "../test.php";
 
 OUTPUT
-
 include "../test.php";
 
+INPUT
+
+$f = fopen('test.txt', 'w');
+fwrite($f, 'test');
+fwrite($f, ' file');
+fclose($f);
+$f = fopen('test.txt', 'r');
+echo fread($f, 100);
+fclose($f);
+echo file_get_contents('test.txt');
+
+OUTPUT
+
+$f = fopen('test.txt', 'w');
+fwrite($f, 'test');
+fwrite($f, ' file');
+fclose($f);
+$f = fopen('test.txt', 'r');
+echo "test file";
+fclose($f);
+echo "test file";

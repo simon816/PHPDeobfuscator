@@ -37,3 +37,15 @@ print preg_replace('/([a-z])/e', 'strtoupper("$1")', 'hello world');
 
 OUTPUT
 print "HELLO WORLD";
+
+INPUT
+
+$a = 'test';
+echo $a;
+print $a;
+
+OUTPUT
+
+$a = 'test';
+echo "test";
+print "test";

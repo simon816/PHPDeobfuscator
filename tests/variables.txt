@@ -30,6 +30,18 @@ echo "abc";
 
 INPUT
 
+$obj = new stdClass();
+$obj->foo = 'bar';
+echo '' . $obj->foo;
+
+OUTPUT
+
+$obj = new stdClass();
+$obj->foo = 'bar';
+echo "bar";
+
+INPUT
+
 $a = "base64_decode";
 $b = $a("YmFzZTY0X2RlY29kZQ==");
 ${$b("dGhlQ29kZQ==")} = "VGVzdA==";
@@ -89,3 +101,61 @@ $a = array(1, 2, 3);
 $a[0] = $a[2];
 echo "{$b}" . "{$temp}" . "Array" . "{$i}" . "{$test}";
 echo "{$test}";
+
+INPUT
+
+namespace NS;
+echo __LINE__;
+echo __FILE__;
+echo __DIR__;
+
+function func() {
+    echo __FUNCTION__;
+}
+
+class Foo {
+    function bar() {
+        echo __CLASS__;
+        echo __METHOD__;
+        echo __NAMESPACE__;
+        echo __FUNCTION__;
+    }
+}
+trait T {
+    function f() {
+        echo __TRAIT__;
+        echo __NAMESPACE__;
+        echo __CLASS__;
+    }
+}
+
+OUTPUT
+
+namespace NS;
+
+echo 3;
+echo "/var/www/html/testcase.php";
+echo "/var/www/html";
+function func()
+{
+    echo "NS\\func";
+}
+class Foo
+{
+    function bar()
+    {
+        echo "NS\\Foo";
+        echo "NS\\Foo::bar";
+        echo "NS";
+        echo "bar";
+    }
+}
+trait T
+{
+    function f()
+    {
+        echo "NS\\T";
+        echo "NS";
+        echo __CLASS__;
+    }
+}

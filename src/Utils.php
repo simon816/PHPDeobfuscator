@@ -1,5 +1,7 @@
 <?php
 
+use League\Flysystem\Filesystem;
+use League\Flysystem\PathTraversalDetected;
 use PhpParser\Node;
 use PhpParser\Node\Scalar;
 
@@ -64,6 +66,15 @@ class Utils
             $values[] = $ref->getValue();
         }
         return $values;
+    }
+
+    public static function safeFileExists(Filesystem $fileSystem, $path)
+    {
+        try {
+            return $fileSystem->fileExists($path);
+        } catch (PathTraversalDetected $e) {
+            return false;
+        }
     }
 }
 

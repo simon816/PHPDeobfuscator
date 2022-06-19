@@ -197,7 +197,8 @@ class Resolver extends PhpParser\NodeVisitorAbstract
             return;
         }
         if ($isEnter) {
-            $name = $node->name ? (is_string($node->name) ? $node->name : $node->name->toString()) : '';
+            // name is either Name or Identifier, both have toString
+            $name = $node->name ? $node->name->toString() : '';
             if ($key == 'method') {
                 // function is set to the name of the method
                 $this->nameScope['function'] = $name;
@@ -478,7 +479,7 @@ class Resolver extends PhpParser\NodeVisitorAbstract
             if ($objVar instanceof UnknownVarRef) {
                 return $objVar;
             }
-            if (!is_string($var->name)) {
+            if ($var->name instanceof Expr) {
                 $nameVal = $this->resolveValue($var->name, $tryUnknownVar);
                 if ($nameVal !== null && !$nameVal->isMutable()) {
                     $name = $nameVal->getValue();
@@ -486,7 +487,7 @@ class Resolver extends PhpParser\NodeVisitorAbstract
                     $name = null;
                 }
             } else {
-                $name = $var->name;
+                $name = $var->name->name;
             }
             if ($name !== null) {
                 return new PropertyAccessVariable($objVar, $name);

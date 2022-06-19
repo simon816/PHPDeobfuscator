@@ -9,24 +9,24 @@ use PhpParser\Node\Name;
 trait FakeTrait
 {
 
-    public function __construct($key, $realType)
+    public function __construct($key, $realClass)
     {
         parent::__construct();
         $this->key = $key;
-        $this->_realType = $realType;
+        $this->_realClass = $realClass;
     }
 
-    public function getSubNodeNames()
+    public function getSubNodeNames() : array
     {
         return ['key'];
     }
 
-    public function getRealType()
+    public function getRealClass()
     {
-        return $this->_realType;
+        return $this->_realClass;
     }
 
-    public function getType()
+    public function getType() : string
     {
         return 'FakeNode';
     }
@@ -90,22 +90,17 @@ class FakePrinter extends ExtendedPrettyPrinter
         return "__NODE[{$node->key}]";
     }
 
-    public function noIndentTok()
-    {
-        return $this->noIndentToken;
-    }
-
     // Copied from PrettyPrinterAbstract
     // Deals with FakeNode to get the real precedence
-    protected function pPrec(Node $node, $parentPrecedence, $parentAssociativity, $childPosition) {
-        $type = $node->getType();
-        if ($type === 'FakeNode') {
-            $type = $node->getRealType();
+    protected function pPrec(Node $node, int $parentPrecedence, int $parentAssociativity, int $childPosition) : string {
+        $class = \get_class($node);
+        if ($node->getType() === 'FakeNode') {
+            $class = $node->getRealClass();
         }
-        if (isset($this->precedenceMap[$type])) {
-            $childPrecedence = $this->precedenceMap[$type][0];
+        if (isset($this->precedenceMap[$class])) {
+            $childPrecedence = $this->precedenceMap[$class][0];
             if ($childPrecedence > $parentPrecedence
-                || ($parentPrecedence == $childPrecedence && $parentAssociativity != $childPosition)
+                || ($parentPrecedence === $childPrecedence && $parentAssociativity !== $childPosition)
             ) {
                 return '(' . $this->p($node) . ')';
             }
@@ -142,7 +137,7 @@ class MetadataVisitor extends \PhpParser\NodeVisitorAbstract
     {
         $p = $this->printer;
         $substituteNodes = [];
-        $newNode->setAttribute('origType', $origNode->getType());
+        $newNode->setAttribute('origClass', get_class($origNode));
         $origCurrentChildren = [];
 
         $evalBlockReplace = $newNode instanceof EvalBlock && $newNode->origStmts !== null;
@@ -219,7 +214,8 @@ class MetadataVisitor extends \PhpParser\NodeVisitorAbstract
         $fileStr = $p->prettyPrintFile(fake($stmts, 'ROOT'));
         $sections = [['str', $fileStr]];
         replaceFake($stmts, $sections, 'ROOT', $p);
-        return _realFixIndent("", flattenSections($sections), $p->noIndentTok(), true);
+        // XXX: fix indent token
+        return _realFixIndent("", flattenSections($sections), 'INDENT_TOK', true);
     }
 
 }
@@ -317,17 +313,17 @@ function fake($val, $name)
         }
         return $fakeArr;
     } elseif ($val instanceof Name) {
-        return new FakeNodeName($name, $val->getAttribute('origType'));
+        return new FakeNodeName($name, $val->getAttribute('origClass'));
     } elseif ($val instanceof Node\Scalar\EncapsedStringPart) {
         return $val;
     } elseif ($val instanceof Expr\Variable) {
-        return new FakeNodeVar($name, $val->getAttribute('origType'));
+        return new FakeNodeVar($name, $val->getAttribute('origClass'));
     } elseif ($val instanceof Expr) {
-        return new FakeNodeExpr($name, $val->getAttribute('origType'));
+        return new FakeNodeExpr($name, $val->getAttribute('origClass'));
     } elseif ($val instanceof Stmt) {
-        return new FakeNodeStmt($name, $val->getAttribute('origType'));
+        return new FakeNodeStmt($name, $val->getAttribute('origClass'));
     } elseif ($val instanceof Node) {
-        return new FakeNode($name, $val->getAttribute('origType'));
+        return new FakeNode($name, $val->getAttribute('origClass'));
     }
     return $val;
 }
@@ -453,11 +449,13 @@ function processSubstitutions(array &$sections, $nodeName, Node $node, FakePrint
                         $indent = getIndent($s);
                         if ($node->hasAttribute(AttrName::REDUCED_FROM)) {
                             $reducedFrom = $node->getAttribute(AttrName::REDUCED_FROM);
-                            $newSections[] = ['reducedNode', fixIdent($indent, $reducedFrom, $p->noIndentTok())];
+                            // XXX: Fix indent token
+                            $newSections[] = ['reducedNode', fixIdent($indent, $reducedFrom, 'INDENT_TOK')];
                         } else {
                             // This could just be 'str' but don't bother
                             // running replacements on it so make it a different type
-                            $newSections[] = ['node', fixIdent($indent, $p->printNode($node), $p->noIndentTok())];
+                            // XXX: fix indent token
+                            $newSections[] = ['node', fixIdent($indent, $p->printNode($node), 'INDENT_TOK')];
                         }
                     }
                 }

@@ -16,12 +16,12 @@ class EvalBlock extends Expr
         $this->origStmts = $origStmts;
     }
 
-    public function getSubNodeNames()
+    public function getSubNodeNames() : array
     {
         return array('stmts');
     }
 
-    public function getType()
+    public function getType() : string
     {
         return 'Expr_EvalBlock';
     }

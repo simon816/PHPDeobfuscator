@@ -3,6 +3,7 @@ namespace Reducer;
 
 use PhpParser\Node\Expr;
 use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Stmt;
 
 use Deobfuscator;
 use EvalBlock;
@@ -37,7 +38,7 @@ class EvalReducer extends AbstractReducer
         // One of Include_::(TYPE_INCLUDE, TYPE_INCLUDE_ONCE, TYPE_REQUIRE, TYPE_REQUIRE_ONCE)
         $file = Utils::getValue($node->expr);
         $fileSystem = $this->deobfuscator->getFilesystem();
-        if (!$fileSystem->safeHas($file)) {
+        if (!Utils::safeFileExists($fileSystem, $file)) {
             return;
         }
         $code = $fileSystem->read($file);
@@ -61,8 +62,8 @@ class EvalReducer extends AbstractReducer
         $origTree = $this->parseCode($code);
         $tree = $this->deobfTree($origTree);
         // If it's just a single expression, return directly
-        if (count($tree) == 1 && $tree[0] instanceof Expr) {
-            return $tree[0];
+        if (count($tree) == 1 && $tree[0] instanceof Stmt\Expression) {
+            return $tree[0]->expr;
         }
         if ($this->outputAsEvalStr) {
             $expr = new Expr\Eval_(new String_($this->deobfuscator->prettyPrint($tree, false), array(

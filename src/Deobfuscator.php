@@ -1,6 +1,6 @@
 <?php
 use League\Flysystem\Filesystem;
-use League\Flysystem\Memory\MemoryAdapter;
+use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 
 class Deobfuscator
 {
@@ -30,8 +30,7 @@ class Deobfuscator
         $this->secondPass->addVisitor($resolver);
         $this->secondPass->addVisitor(new ResolveValueVisitor($resolver));
 
-        $this->fileSystem = new Filesystem(new MemoryAdapter());
-        $this->fileSystem->addPlugin(new FSPlugins\SafeHas());
+        $this->fileSystem = new Filesystem(new InMemoryFilesystemAdapter());
 
         $evalReducer = new Reducer\EvalReducer($this);
 

@@ -130,3 +130,23 @@ if ($something) {
 } else {
     goto def;
 }
+
+INPUT
+
+function () {
+    goto A;
+    B:
+    1;
+    return;
+    A:
+    2;
+    goto B;
+};
+
+OUTPUT
+
+function () {
+    2;
+    1;
+    return;
+};

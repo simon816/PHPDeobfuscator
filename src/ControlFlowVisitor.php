@@ -109,7 +109,7 @@ class ControlFlowVisitor extends PhpParser\NodeVisitorAbstract
     public function enterNode(Node $node)
     {
         if ($node instanceof Stmt\Label) {
-            $block = $this->scope->getBlock($node->name);
+            $block = $this->scope->getBlock($node->name->name);
             $block->setDefined();
             if ($this->scope->currentBlock->isEmpty()) {
                 $this->scope->currentBlock->setAlias($block);
@@ -131,6 +131,11 @@ class ControlFlowVisitor extends PhpParser\NodeVisitorAbstract
             $this->scope->currentBlock->append($node);
         }
 
+        // Unwrap to get the expression node
+        if ($node instanceof Stmt\Expression) {
+            $node = $node->expr;
+        }
+
         $className = get_class($node);
 
         if (array_key_exists($className, $this->nestedTypes)) {
@@ -139,7 +144,7 @@ class ControlFlowVisitor extends PhpParser\NodeVisitorAbstract
         }
 
         if ($node instanceof Stmt\Goto_) {
-            $block = $this->scope->getBlock($node->name);
+            $block = $this->scope->getBlock($node->name->name);
             $this->moveInto($block);
         }
 
@@ -238,29 +243,41 @@ class WrappedNode implements Node
         }
     }
 
-    public function getSubNodeNames() { return $this->subNodes; }
+    public function getSubNodeNames() : array { return $this->subNodes; }
 
     public function unwrap() { return $this->node; }
 
-    public function getType() { return $this->node->getType(); }
+    public function getType() : string { return $this->node->getType(); }
 
-    public function getLine() { return $this->node->getLine(); }
+    public function getLine() : int { return $this->node->getLine(); }
 
-    public function setLine($line) { $this->node->setLine($line); }
+    public function getStartLine() : int { return $this->node->getStartLine(); }
+
+    public function getEndLine() : int { return $this->node->getEndLine(); }
+
+    public function getStartTokenPos() : int { return $this->node->getStartTokenPos(); }
+
+    public function getEndTokenPos() : int { return $this->node->getEndTokenPos(); }
+
+    public function getStartFilePos() : int { return $this->node->getStartFilePos(); }
+
+    public function getEndFilePos() : int { return $this->node->getEndFilePos(); }
+
+    public function getComments() : array { return $this->node->getComments(); }
 
     public function getDocComment() { return $this->node->getDocComment(); }
 
     public function setDocComment(PhpParser\Comment\Doc $docComment) { $this->node->setDocComment($docComment); }
 
-    public function setAttribute($key, $value) { $this->node->setAttribute($key, $value); }
+    public function setAttribute(string $key, $value) { $this->node->setAttribute($key, $value); }
 
-    public function hasAttribute($key) { return $this->node->hasAttribute($key); }
+    public function hasAttribute(string $key) : bool { return $this->node->hasAttribute($key); }
 
-    public function &getAttribute($key, $default = null) { return $this->node->getAttribute($key, $default); }
+    public function getAttribute(string $key, $default = null) { return $this->node->getAttribute($key, $default); }
 
-    public function getAttributes() { return $this->node->getAttributes(); }
+    public function getAttributes() : array { return $this->node->getAttributes(); }
 
-    public function jsonSerialize() { return $this->node->jsonSerialize(); }
+    public function setAttributes(array $attributes) { $this->node->setAttributes($attributes); }
 }
 
 class CodeBlock
@@ -313,10 +330,10 @@ class CodeBlock
             function($node) use ($removeLabel, $removeGotoExit) {
                 if ($node instanceof Stmt\Label) {
                     // If no enters to label or label is $removeLabel, remove.
-                    return $this->entersPerName[$node->name] !== 0 && (!$removeLabel || $node->name !== $removeLabel);
+                    return $this->entersPerName[$node->name->name] !== 0 && (!$removeLabel || $node->name->name !== $removeLabel);
                 }
                 if ($removeGotoExit && $node instanceof Stmt\Goto_) {
-                    return $node->name != $this->exitOrigName;
+                    return $node->name->name !== $this->exitOrigName;
                 }
                 return true;
             }), $nodes);
