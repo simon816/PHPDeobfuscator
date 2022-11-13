@@ -10,15 +10,17 @@ class PassThrough implements FunctionReducer
     public function getSupportedNames()
     {
         return array(
-            'base_convert',
             'base64_decode',
-            'chr',
+            'base_convert',
             'ceil',
+            'chr',
+            'convert_uudecode',
             'dirname',
             'explode',
             'gmmktime',
             'gzinflate',
             'gzuncompress',
+            'hex2bin',
             'htmlspecialchars_decode',
             'implode',
             'intval',
