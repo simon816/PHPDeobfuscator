@@ -63,7 +63,12 @@ class EvalReducer extends AbstractReducer
         $origTree = $this->parseCode($code);
         $tree = $this->deobfTree($origTree);
         // If it's just a single expression, return directly
-        if (count($tree) == 1 && $tree[0] instanceof Stmt\Expression) {
+        // XXX this is not semantically correct because eval does not return
+        // anything by default
+        if (count($tree) === 1 && $tree[0] instanceof Stmt\Expression) {
+            return $tree[0]->expr;
+        }
+        if (count($tree) === 1 && $tree[0] instanceof Stmt\Return_) {
             return $tree[0]->expr;
         }
         if ($this->outputAsEvalStr) {

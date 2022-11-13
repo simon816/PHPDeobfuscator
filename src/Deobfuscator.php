@@ -48,7 +48,7 @@ class Deobfuscator
         $reducer->addReducer($evalReducer);
         $reducer->addReducer($funcCallReducer);
         $reducer->addReducer(new Reducer\MagicReducer($this, $resolver));
-        $reducer->addReducer(new Reducer\UnaryReducer());
+        $reducer->addReducer(new Reducer\UnaryReducer($resolver));
         $reducer->addReducer(new Reducer\MiscReducer());
 
         $this->secondPass->addVisitor($reducer);

@@ -20,10 +20,31 @@ class ReducerVisitor extends \PhpParser\NodeVisitorAbstract
         }
     }
 
+    public function enterNode(Node $node)
+    {
+        // For MaybeStmtArray, we tag the inner expression node as being attached to a Stmt\Expression
+        if ($node instanceof Node\Stmt\Expression) {
+            $node->expr->setAttribute(AttrName::IN_EXPR_STMT, true);
+        }
+    }
+
     public function leaveNode(Node $node)
     {
+        // If Stmt\Expression was forwared a MaybeStmtArray, now is the time to action it
+        if ($node instanceof Node\Stmt\Expression && $node->expr instanceof MaybeStmtArray) {
+            return $node->expr->stmts;
+        }
         try {
-            return $this->reduceNode($node);
+            $newNode = $this->reduceNode($node);
+            // Reducer wants to return a statement array, we forward this request if we'e inside a Stmt\Expression
+            // Otherwise, use the fallback expression
+            if ($newNode instanceof MaybeStmtArray) {
+                if ($node->getAttribute(AttrName::IN_EXPR_STMT) === true) {
+                    return $newNode;
+                }
+                return $newNode->expr;
+            }
+            return $newNode;
         } catch (Exceptions\BadValueException $e) {
         }
     }

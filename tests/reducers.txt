@@ -73,3 +73,96 @@ $a = 2;
 -1;
 1;
 0;
+
+INPUT
+
+$arr = ['a' => 1, 'b' => 10];
+$obj = new stdClass();
+$obj->a = 1;
+$obj->b = 10;
+$a = "a";
+$a++;
+$arr['a']++;
+$obj->a++;
+foo($a++) . foo($a++);
+
+$arr = ['a' => 1, 'b' => 10];
+$obj = new stdClass();
+$obj->a = 1;
+$obj->b = 10;
+$a = 1;
+++$a;
+++$arr['a'];
+++$obj->a;
+foo(++$a);
+
+$arr = ['a' => 1, 'b' => 10];
+$obj = new stdClass();
+$obj->a = 1;
+$obj->b = 10;
+$b = 10;
+$b--;
+$arr['b']--;
+$obj->b--;
+foo($b--) . foo($b--);
+
+$arr = ['a' => 1, 'b' => 10];
+$obj = new stdClass();
+$obj->a = 1;
+$obj->b = 10;
+$b = 10;
+--$b;
+--$arr['b'];
+--$obj->b;
+foo(--$b);
+
+OUTPUT
+
+$arr = ['a' => 1, 'b' => 10];
+$obj = new stdClass();
+$obj->a = 1;
+$obj->b = 10;
+$a = "a";
+$a = "b";
+$arr['a'] = 2;
+$obj->a = 2;
+foo((function () use(&$a) {
+    $a = "c";
+    return "b";
+})()) . foo((function () use(&$a) {
+    $a = "d";
+    return "c";
+})());
+$arr = ['a' => 1, 'b' => 10];
+$obj = new stdClass();
+$obj->a = 1;
+$obj->b = 10;
+$a = 1;
+$a = 2;
+$arr['a'] = 2;
+$obj->a = 2;
+foo($a = 3);
+$arr = ['a' => 1, 'b' => 10];
+$obj = new stdClass();
+$obj->a = 1;
+$obj->b = 10;
+$b = 10;
+$b = 9;
+$arr['b'] = 9;
+$obj->b = 9;
+foo((function () use(&$b) {
+    $b = 8;
+    return 9;
+})()) . foo((function () use(&$b) {
+    $b = 7;
+    return 8;
+})());
+$arr = ['a' => 1, 'b' => 10];
+$obj = new stdClass();
+$obj->a = 1;
+$obj->b = 10;
+$b = 10;
+$b = 9;
+$arr['b'] = 9;
+$obj->b = 9;
+foo($b = 8);

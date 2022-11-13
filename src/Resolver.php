@@ -56,11 +56,12 @@ class Resolver extends \PhpParser\NodeVisitorAbstract
             // Inherit variables from the use clause
             if ($node instanceof Expr\Closure) {
                 foreach ($node->uses as $use) {
-                    $var = new LiteralName($use->var);
+                    $var = new LiteralName($use->var->name);
                     $parentScope = $this->scope->getParent();
-                    $val = $var->getValue($parentScope);
                     if ($use->byRef) {
                         $val = new ByReference($var, $parentScope);
+                    } else {
+                        $val = $var->getValue($parentScope);
                     }
                     // Only assign if variable is known
                     if ($val !== null) {

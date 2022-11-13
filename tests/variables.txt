@@ -159,3 +159,44 @@ trait T
         echo __CLASS__;
     }
 }
+
+INPUT
+
+function foo() {
+    $myVar = "123";
+    echo eval('return $myVar;');
+}
+
+OUTPUT
+
+function foo()
+{
+    $myVar = "123";
+    echo "123";
+}
+
+INPUT
+
+$var = "foo";
+function () {
+    return $var;
+};
+function () use ($var) {
+    return $var;
+};
+function () use (&$var) {
+    return $var;
+};
+
+OUTPUT
+
+$var = "foo";
+function () {
+    return $var;
+};
+function () use($var) {
+    return "foo";
+};
+function () use(&$var) {
+    return "foo";
+};

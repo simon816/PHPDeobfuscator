@@ -47,4 +47,12 @@ class MiscReducer extends AbstractReducer
     {
         return new Node\Expr\Print_(Utils::scalarToNode(Utils::getValue($node->expr)));
     }
+
+    public function reduceReturn(Node\Stmt\Return_ $node)
+    {
+        if ($node->expr === null) {
+            return;
+        }
+        return new Node\Stmt\Return_(Utils::scalarToNode(Utils::getValue($node->expr)));
+    }
 }
