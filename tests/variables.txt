@@ -200,3 +200,23 @@ function () use($var) {
 function () use(&$var) {
     return "foo";
 };
+
+INPUT
+
+$a = 0;
+LABEL:
+print $a;
+if ($a < 10) {
+    $a++;
+    goto LABEL;
+}
+
+OUTPUT
+
+$a = 0;
+LABEL:
+print $a;
+if ($a < 10) {
+    $a++;
+    goto LABEL;
+}

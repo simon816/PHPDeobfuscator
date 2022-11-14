@@ -85,7 +85,10 @@ class Resolver extends \PhpParser\NodeVisitorAbstract
         if ($node instanceof Stmt\Foreach_) {
             $this->setNodesInMutableContext($node->stmts);
         }
-        if ($node instanceof Stmt\While_ || $node instanceof Stmt\Do_ || $node instanceof Stmt\Case_) {
+        if ($node instanceof Stmt\While_
+            || $node instanceof Stmt\Do_
+            || $node instanceof Stmt\Case_
+            || $node instanceof Stmt\Label) {
             $this->setCurrentVarsMutable();
         }
     }

@@ -30,7 +30,7 @@ class ReducerVisitor extends \PhpParser\NodeVisitorAbstract
 
     public function leaveNode(Node $node)
     {
-        // If Stmt\Expression was forwared a MaybeStmtArray, now is the time to action it
+        // If Stmt\Expression was forwarded a MaybeStmtArray, now is the time to action it
         if ($node instanceof Node\Stmt\Expression && $node->expr instanceof MaybeStmtArray) {
             return $node->expr->stmts;
         }
