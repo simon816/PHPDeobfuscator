@@ -34,7 +34,8 @@ class FuncCallReducer extends AbstractReducer
             $nameNode->setAttribute('replaces', $node->name);
             $node->name = $nameNode;
         }
-        return $this->makeFunctionCall($name, $node);
+        // Normalise to lowercase - function names are case insensitive
+        return $this->makeFunctionCall(strtolower($name), $node);
     }
 
     private function makeFunctionCall($name, $node)

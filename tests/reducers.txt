@@ -166,3 +166,15 @@ $b = 9;
 $arr['b'] = 9;
 $obj->b = 9;
 foo($b = 8);
+
+INPUT
+
+$x = ChR(65);
+$func = 'oRD';
+$y = $func('A');
+
+OUTPUT
+
+$x = "A";
+$func = 'oRD';
+$y = 65;
