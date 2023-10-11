@@ -41,6 +41,10 @@ optional arguments:
 
 The deobfuscated output is printed to STDOUT.
 
+#### Batch Processing
+
+Create a "toDeobfuscate" directory and put the files or directories you wish to deobfuscate inside it. Run `bash batchDeobfuscate.sh`. It will create a "deobfuscated" directory with the outputs. If the "deobfuscated" directory already exists, it will clear it before running.
+
 ### Web Server
 
 `index.php` outputs a simple textarea to paste the PHP code into. Deobfuscated code is printed when the form is submitted
