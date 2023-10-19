@@ -8,6 +8,7 @@ class ResourceValue extends AbstractValRef
 {
     private $filename;
     private $resource;
+    private $isClosed = false;
 
     public function __construct($filename, $resource)
     {
@@ -35,8 +36,21 @@ class ResourceValue extends AbstractValRef
         return $this->filename;
     }
 
+    public function close()
+    {
+        $this->isClosed = true;
+    }
+
+    public function isClosed()
+    {
+        return $this->isClosed;
+    }
+
     public function getResource()
     {
+        if ($this->isClosed) {
+            throw new \LogicException("Tried to use closed resource: {$this->filename}");
+        }
         return $this->resource;
     }
 }

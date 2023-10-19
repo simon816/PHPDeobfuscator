@@ -90,6 +90,9 @@ class FileSystemCall implements FunctionReducer
                 if (!($arg instanceof ResourceValue)) {
                     throw new Exceptions\BadValueException("file handle is not a resource");
                 }
+                if ($arg->isClosed()) {
+                    throw new Exceptions\BadValueException("file handle is closed");
+                }
                 $newArgs[] = $arg;
             } else {
                 $newArgs[] = $arg->getValue();
@@ -131,5 +134,6 @@ class FileSystemCall implements FunctionReducer
     private function fclose(ResourceValue $handle)
     {
         fclose($handle->getResource());
+        $handle->close();
     }
 }

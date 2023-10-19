@@ -51,3 +51,29 @@ $f = fopen('test.txt', 'r');
 echo "test file";
 fclose($f);
 echo "test file";
+
+INPUT
+
+$f = fopen('test.txt', 'w');
+fwrite($f, 'test');
+fclose($f);
+fwrite($f, 'closed');
+fclose($f);
+$f = fopen('test.txt', 'r');
+echo fread($f, 100);
+fclose($f);
+echo fread($f, 100);
+fclose($f);
+
+OUTPUT
+
+$f = fopen('test.txt', 'w');
+fwrite($f, 'test');
+fclose($f);
+fwrite($f, 'closed');
+fclose($f);
+$f = fopen('test.txt', 'r');
+echo "test";
+fclose($f);
+echo fread($f, 100);
+fclose($f);
